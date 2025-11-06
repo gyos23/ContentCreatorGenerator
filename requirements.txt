@@ -1,3 +1,9 @@
 # Social Media Content Generator Requirements
 # Python 3.7+
-# No external dependencies required - uses only Python standard library
+
+# For web app (Vercel deployment)
+Flask==2.3.3
+flask-cors==4.0.0
+Werkzeug==2.3.7
+
+# No other dependencies required - uses only Python standard library

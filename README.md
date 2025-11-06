@@ -2,14 +2,42 @@
 
 An interactive app to help generate social media content in Dorian's style and grow engagement and business.
 
+Available in two versions:
+- **Web App** - Beautiful web interface (deploy on Vercel)
+- **CLI App** - Command-line interface for local use
+
 ## Quick Start
 
-### Installation
+### Option 1: Web App (Recommended for Vercel)
+
+#### Deploy to Vercel
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) and sign in
+3. Click "New Project"
+4. Import your repository
+5. Vercel will auto-detect the settings
+6. Click "Deploy"
+
+Your app will be live in minutes!
+
+#### Run Locally (Web Version)
 ```bash
-# Clone or navigate to the repository
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the Flask server
+python api/index.py
+
+# Open browser to http://localhost:5000
+```
+
+### Option 2: CLI App (Command Line)
+
+```bash
+# Navigate to the repository
 cd ContentCreatorGenerator
 
-# Run the app (Python 3.7+ required, no dependencies needed)
+# Run the CLI app (Python 3.7+ required, no dependencies needed)
 python3 content_generator.py
 ```
 
