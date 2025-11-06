@@ -1,8 +1,52 @@
 # ContentCreatorGenerator
 
-an app to help generate social media content in my style and grow my business.
+An interactive app to help generate social media content in Dorian's style and grow engagement and business.
 
-here's an example of my style
+## Quick Start
+
+### Installation
+```bash
+# Clone or navigate to the repository
+cd ContentCreatorGenerator
+
+# Run the app (Python 3.7+ required, no dependencies needed)
+python3 content_generator.py
+```
+
+### Features
+
+1. **Instagram Reel Generator** - Create full 60-second reel scripts with:
+   - Problem-solution format
+   - Detailed timestamps and visual cues
+   - B-roll placement markers
+   - Your signature style and CTAs
+
+2. **Content Hook Generator** - Generate attention-grabbing hooks for any topic
+
+3. **Content Framework Library** - Access proven content structures:
+   - Problem-Solution Framework
+   - Storytelling Framework
+   - Listicle Framework
+
+4. **Quick Content Ideas** - Get instant content ideas for rapid creation
+
+### How to Use
+
+1. Run `python3 content_generator.py`
+2. Choose from the menu options (1-6)
+3. Select your preferred category or topic
+4. Get generated content in your unique style
+5. Copy and customize for your platform
+
+### Content Categories
+
+- **Personal Growth**: Dealing with negative people, building confidence, setting boundaries, managing stress
+- **Professional Development**: Leadership, communication, time management, networking
+- **Mindset**: Positive thinking, emotional intelligence, self-discipline, motivation
+
+## Your Content Style Guide
+
+Here's an example of my style
 
 Instagram Reel Template: Problem-Solution Format
 STRUCTURE BREAKDOWN
