@@ -1,8 +1,80 @@
 # ContentCreatorGenerator
 
-an app to help generate social media content in my style and grow my business.
+An interactive app to help generate social media content in Dorian's style and grow engagement and business.
 
-here's an example of my style
+Available in two versions:
+- **Web App** - Beautiful web interface (deploy on Vercel)
+- **CLI App** - Command-line interface for local use
+
+## Quick Start
+
+### Option 1: Web App (Recommended for Vercel)
+
+#### Deploy to Vercel
+1. Push your code to GitHub
+2. Go to [vercel.com](https://vercel.com) and sign in
+3. Click "New Project"
+4. Import your repository
+5. Vercel will auto-detect the settings
+6. Click "Deploy"
+
+Your app will be live in minutes!
+
+#### Run Locally (Web Version)
+```bash
+# Install dependencies
+pip install -r requirements.txt
+
+# Run the Flask server
+python api/index.py
+
+# Open browser to http://localhost:5000
+```
+
+### Option 2: CLI App (Command Line)
+
+```bash
+# Navigate to the repository
+cd ContentCreatorGenerator
+
+# Run the CLI app (Python 3.7+ required, no dependencies needed)
+python3 content_generator.py
+```
+
+### Features
+
+1. **Instagram Reel Generator** - Create full 60-second reel scripts with:
+   - Problem-solution format
+   - Detailed timestamps and visual cues
+   - B-roll placement markers
+   - Your signature style and CTAs
+
+2. **Content Hook Generator** - Generate attention-grabbing hooks for any topic
+
+3. **Content Framework Library** - Access proven content structures:
+   - Problem-Solution Framework
+   - Storytelling Framework
+   - Listicle Framework
+
+4. **Quick Content Ideas** - Get instant content ideas for rapid creation
+
+### How to Use
+
+1. Run `python3 content_generator.py`
+2. Choose from the menu options (1-6)
+3. Select your preferred category or topic
+4. Get generated content in your unique style
+5. Copy and customize for your platform
+
+### Content Categories
+
+- **Personal Growth**: Dealing with negative people, building confidence, setting boundaries, managing stress
+- **Professional Development**: Leadership, communication, time management, networking
+- **Mindset**: Positive thinking, emotional intelligence, self-discipline, motivation
+
+## Your Content Style Guide
+
+Here's an example of my style
 
 Instagram Reel Template: Problem-Solution Format
 STRUCTURE BREAKDOWN
