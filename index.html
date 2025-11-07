@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Content Generator - Dorian</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 20px;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .option-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+        }
+
+        .option-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+            border-color: #667eea;
+        }
+
+        .option-card.active {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .option-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .option-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .option-description {
+            font-size: 0.95rem;
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .content-area {
+            background: white;
+            border-radius: 15px;
+            padding: 40px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+
+        .content-area.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        select, input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .output {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9ff;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .output-section {
+            margin-bottom: 25px;
+        }
+
+        .output-section h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+
+        .output-section h4 {
+            color: #764ba2;
+            margin-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        .script-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            line-height: 1.8;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+
+        .tip-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 3px solid #764ba2;
+        }
+
+        .tip-number {
+            color: #667eea;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .hook-item {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-top: 3px solid #667eea;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #667eea;
+            font-size: 1.2rem;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .back-btn {
+            background: #6c757d;
+            margin-right: 10px;
+        }
+
+        .copy-btn {
+            background: #28a745;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+
+        .framework-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .framework-section ul {
+            list-style-position: inside;
+            line-height: 2;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .option-card {
+                padding: 20px;
+            }
+
+            .content-area {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎬 Social Media Content Generator</h1>
+            <p>Generate engaging content in Dorian's style to grow your business</p>
+        </div>
+
+        <div id="mainMenu" class="options-grid">
+            <div class="option-card" onclick="showSection('reel')">
+                <div class="option-icon">📱</div>
+                <div class="option-title">Instagram Reel</div>
+                <div class="option-description">Generate a full 60-second reel script with timestamps and B-roll markers</div>
+            </div>
+
+            <div class="option-card" onclick="showSection('hooks')">
+                <div class="option-icon">🎣</div>
+                <div class="option-title">Content Hooks</div>
+                <div class="option-description">Create attention-grabbing hooks for your content</div>
+            </div>
+
+            <div class="option-card" onclick="showSection('quick')">
+                <div class="option-icon">⚡</div>
+                <div class="option-title">Quick Ideas</div>
+                <div class="option-description">Get instant content ideas for rapid creation</div>
+            </div>
+
+            <div class="option-card" onclick="showSection('frameworks')">
+                <div class="option-icon">📋</div>
+                <div class="option-title">Content Frameworks</div>
+                <div class="option-description">View proven content structures and templates</div>
+            </div>
+        </div>
+
+        <!-- Instagram Reel Section -->
+        <div id="reelSection" class="content-area">
+            <h2>📱 Generate Instagram Reel</h2>
+            <form id="reelForm" onsubmit="generateReel(event)">
+                <div class="form-group">
+                    <label for="reelCategory">Choose Category:</label>
+                    <select id="reelCategory" required>
+                        <option value="">Select a category...</option>
+                        <option value="personal_growth">Personal Growth</option>
+                        <option value="professional_development">Professional Development</option>
+                        <option value="mindset">Mindset</option>
+                        <option value="random">Random (Surprise Me!)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numTips">Number of Tips (1-5):</label>
+                    <input type="number" id="numTips" min="1" max="5" value="3" required>
+                </div>
+
+                <button type="button" class="btn back-btn" onclick="showMenu()">Back</button>
+                <button type="submit" class="btn">Generate Reel</button>
+            </form>
+
+            <div id="reelOutput"></div>
+        </div>
+
+        <!-- Hooks Section -->
+        <div id="hooksSection" class="content-area">
+            <h2>🎣 Generate Content Hooks</h2>
+            <form id="hooksForm" onsubmit="generateHooks(event)">
+                <div class="form-group">
+                    <label for="hooksCategory">Choose Category:</label>
+                    <select id="hooksCategory" required>
+                        <option value="">Select a category...</option>
+                        <option value="personal_growth">Personal Growth</option>
+                        <option value="professional_development">Professional Development</option>
+                        <option value="mindset">Mindset</option>
+                        <option value="random">Random Mix</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numHooks">Number of Hooks (1-10):</label>
+                    <input type="number" id="numHooks" min="1" max="10" value="5" required>
+                </div>
+
+                <button type="button" class="btn back-btn" onclick="showMenu()">Back</button>
+                <button type="submit" class="btn">Generate Hooks</button>
+            </form>
+
+            <div id="hooksOutput"></div>
+        </div>
+
+        <!-- Quick Ideas Section -->
+        <div id="quickSection" class="content-area">
+            <h2>⚡ Quick Content Ideas</h2>
+            <form id="quickForm" onsubmit="generateQuickIdeas(event)">
+                <div class="form-group">
+                    <label for="numIdeas">Number of Ideas (1-5):</label>
+                    <input type="number" id="numIdeas" min="1" max="5" value="3" required>
+                </div>
+
+                <button type="button" class="btn back-btn" onclick="showMenu()">Back</button>
+                <button type="submit" class="btn">Generate Ideas</button>
+            </form>
+
+            <div id="quickOutput"></div>
+        </div>
+
+        <!-- Frameworks Section -->
+        <div id="frameworksSection" class="content-area">
+            <h2>📋 Content Frameworks</h2>
+            <form id="frameworksForm" onsubmit="viewFrameworks(event)">
+                <div class="form-group">
+                    <label for="frameworkType">Choose Framework:</label>
+                    <select id="frameworkType" required>
+                        <option value="">Select a framework...</option>
+                        <option value="problem-solution">Problem-Solution Framework</option>
+                        <option value="storytelling">Storytelling Framework</option>
+                        <option value="listicle">Listicle Framework</option>
+                    </select>
+                </div>
+
+                <button type="button" class="btn back-btn" onclick="showMenu()">Back</button>
+                <button type="submit" class="btn">View Framework</button>
+            </form>
+
+            <div id="frameworksOutput"></div>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = window.location.hostname === 'localhost' ? 'http://localhost:5000' : '';
+
+        function showSection(section) {
+            document.getElementById('mainMenu').style.display = 'none';
+            document.querySelectorAll('.content-area').forEach(area => area.classList.remove('active'));
+
+            const sectionMap = {
+                'reel': 'reelSection',
+                'hooks': 'hooksSection',
+                'quick': 'quickSection',
+                'frameworks': 'frameworksSection'
+            };
+
+            document.getElementById(sectionMap[section]).classList.add('active');
+        }
+
+        function showMenu() {
+            document.querySelectorAll('.content-area').forEach(area => area.classList.remove('active'));
+            document.getElementById('mainMenu').style.display = 'grid';
+
+            // Clear outputs
+            document.getElementById('reelOutput').innerHTML = '';
+            document.getElementById('hooksOutput').innerHTML = '';
+            document.getElementById('quickOutput').innerHTML = '';
+            document.getElementById('frameworksOutput').innerHTML = '';
+        }
+
+        function showLoading(elementId) {
+            document.getElementById(elementId).innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <p>Generating your content...</p>
+                </div>
+            `;
+        }
+
+        function copyToClipboard(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = btn.textContent;
+                btn.textContent = '✓ Copied!';
+                setTimeout(() => {
+                    btn.textContent = originalText;
+                }, 2000);
+            });
+        }
+
+        async function generateReel(event) {
+            event.preventDefault();
+            showLoading('reelOutput');
+
+            const category = document.getElementById('reelCategory').value;
+            const numTips = parseInt(document.getElementById('numTips').value);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/generate/reel`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        category: category === 'random' ? null : category,
+                        num_tips: numTips
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const reel = data.reel;
+                    let html = `
+                        <div class="output">
+                            <div class="output-section">
+                                <h3>📱 ${reel.topic.toUpperCase()} - ${reel.duration}</h3>
+                                <button class="btn copy-btn" onclick="copyToClipboard(\`${reel.full_script.replace(/`/g, '\\`')}\`, this)">📋 Copy Full Script</button>
+                                <div class="script-box">${reel.full_script}</div>
+                            </div>
+
+                            <div class="output-section">
+                                <h3>📋 Detailed Breakdown</h3>
+
+                                <div class="tip-item">
+                                    <h4>🎣 HOOK (${reel.structure.hook.timestamp})</h4>
+                                    <p><strong>Visual:</strong> ${reel.structure.hook.visual}</p>
+                                    <p><strong>Script:</strong> ${reel.structure.hook.script}</p>
+                                </div>
+
+                                <div class="tip-item">
+                                    <h4>👋 INTRO (${reel.structure.intro.timestamp})</h4>
+                                    <p><strong>Visual:</strong> ${reel.structure.intro.visual}</p>
+                                    <p><strong>Script:</strong> ${reel.structure.intro.script}</p>
+                                </div>
+
+                                <div class="tip-item">
+                                    <h4>🔄 TRANSITION (${reel.structure.transition.timestamp})</h4>
+                                    <p><strong>Visual:</strong> ${reel.structure.transition.visual}</p>
+                                    <p><strong>Script:</strong> ${reel.structure.transition.script}</p>
+                                </div>
+
+                                ${reel.structure.tips.map(tip => `
+                                    <div class="tip-item">
+                                        <h4><span class="tip-number">💡 TIP #${tip.number}</span> (${tip.timestamp})</h4>
+                                        <p><strong>Title:</strong> ${tip.title.toUpperCase()}</p>
+                                        <p><strong>Visual:</strong> ${tip.visual}</p>
+                                        <p><strong>Script:</strong> ${tip.script}</p>
+                                    </div>
+                                `).join('')}
+
+                                <div class="tip-item">
+                                    <h4>📢 CALL TO ACTION (${reel.structure.cta.timestamp})</h4>
+                                    <p><strong>Visual:</strong> ${reel.structure.cta.visual}</p>
+                                    <p><strong>Script:</strong> ${reel.structure.cta.script}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('reelOutput').innerHTML = html;
+                } else {
+                    throw new Error(data.error || 'Failed to generate reel');
+                }
+            } catch (error) {
+                document.getElementById('reelOutput').innerHTML = `
+                    <div class="output">
+                        <p style="color: red;">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function generateHooks(event) {
+            event.preventDefault();
+            showLoading('hooksOutput');
+
+            const category = document.getElementById('hooksCategory').value;
+            const count = parseInt(document.getElementById('numHooks').value);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/generate/hooks`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        category: category === 'random' ? null : category,
+                        count: count
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    let html = '<div class="output"><div class="output-section"><h3>🎣 Your Content Hooks</h3>';
+
+                    data.hooks.forEach(hook => {
+                        html += `
+                            <div class="hook-item">
+                                <h4>${hook.number}. ${hook.topic.toUpperCase()}</h4>
+                                <p><strong>Category:</strong> ${hook.category.replace('_', ' ').toUpperCase()}</p>
+                                <p><strong>Hook:</strong> ${hook.hook}</p>
+                                <p><strong>Use for:</strong> ${hook.use_case}</p>
+                                <button class="btn copy-btn" onclick="copyToClipboard('${hook.hook.replace(/'/g, "\\'")}', this)">📋 Copy Hook</button>
+                            </div>
+                        `;
+                    });
+
+                    html += '</div></div>';
+                    document.getElementById('hooksOutput').innerHTML = html;
+                } else {
+                    throw new Error(data.error || 'Failed to generate hooks');
+                }
+            } catch (error) {
+                document.getElementById('hooksOutput').innerHTML = `
+                    <div class="output">
+                        <p style="color: red;">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function generateQuickIdeas(event) {
+            event.preventDefault();
+            showLoading('quickOutput');
+
+            const count = parseInt(document.getElementById('numIdeas').value);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/generate/quick-ideas`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ count: count })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    let html = '<div class="output"><div class="output-section"><h3>⚡ Quick Content Ideas</h3>';
+
+                    data.ideas.forEach(idea => {
+                        html += `
+                            <div class="hook-item">
+                                <h4>${idea.number}. ${idea.topic.toUpperCase()}</h4>
+                                <p><strong>Hook:</strong> ${idea.hook}</p>
+                                <p><strong>Format:</strong> ${idea.format}</p>
+                                <p><strong>CTA:</strong> ${idea.cta}</p>
+                                <button class="btn copy-btn" onclick="copyToClipboard('${idea.hook.replace(/'/g, "\\'")}', this)">📋 Copy Hook</button>
+                            </div>
+                        `;
+                    });
+
+                    html += '</div></div>';
+                    document.getElementById('quickOutput').innerHTML = html;
+                } else {
+                    throw new Error(data.error || 'Failed to generate ideas');
+                }
+            } catch (error) {
+                document.getElementById('quickOutput').innerHTML = `
+                    <div class="output">
+                        <p style="color: red;">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        async function viewFrameworks(event) {
+            event.preventDefault();
+            showLoading('frameworksOutput');
+
+            const frameworkType = document.getElementById('frameworkType').value;
+
+            try {
+                const response = await fetch(`${API_BASE}/api/framework/${frameworkType}`);
+                const data = await response.json();
+
+                if (data.success) {
+                    const framework = data.framework;
+                    let html = `
+                        <div class="output">
+                            <div class="output-section">
+                                <h3>📋 ${framework.name}</h3>
+                                <div class="framework-section">
+                                    <h4>Structure:</h4>
+                                    <ul>
+                                        ${framework.structure.map(step => `<li>${step}</li>`).join('')}
+                                    </ul>
+                                    <p style="margin-top: 20px;"><strong>✅ Best for:</strong> ${framework.best_for}</p>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+
+                    document.getElementById('frameworksOutput').innerHTML = html;
+                } else {
+                    throw new Error(data.error || 'Failed to load framework');
+                }
+            } catch (error) {
+                document.getElementById('frameworksOutput').innerHTML = `
+                    <div class="output">
+                        <p style="color: red;">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+    </script>
+</body>
+</html>
