@@ -335,3 +335,52 @@ class ContentGenerator:
         }
 
         return frameworks.get(framework_type, frameworks["problem-solution"])
+
+    def generate_custom_content(self, user_topic: str, content_type: str = "reel", num_tips: int = 3) -> Dict:
+        """Generate content based on user's custom topic/idea"""
+        # Clean up the topic
+        topic = user_topic.strip().lower()
+
+        if content_type == "reel":
+            # Generate a reel with the custom topic
+            reel = self.generate_instagram_reel(topic, num_tips)
+            reel["custom_topic"] = True
+            reel["original_input"] = user_topic
+            return reel
+        elif content_type == "hooks":
+            # Generate hooks for the custom topic
+            hooks = self.generate_hooks(topic, num_tips)
+            return {
+                "custom_topic": True,
+                "original_input": user_topic,
+                "topic": topic,
+                "hooks": hooks,
+                "use_case": "Instagram Reel, TikTok, YouTube Short"
+            }
+        elif content_type == "quick_idea":
+            # Generate a quick content idea
+            hooks = self.generate_hooks(topic, 1)
+            return {
+                "custom_topic": True,
+                "original_input": user_topic,
+                "topic": topic,
+                "hook": hooks[0],
+                "format": "60-second reel or short-form video",
+                "cta": self.style.signature_cta,
+                "suggested_framework": "Problem-Solution Format"
+            }
+        else:
+            return {"error": "Invalid content type"}
+
+    def add_custom_topics(self, category: str, topics: List[str]) -> bool:
+        """Add custom topics to a category"""
+        if category not in self.topics:
+            self.topics[category] = []
+
+        # Add topics that aren't already in the list
+        for topic in topics:
+            clean_topic = topic.strip().lower()
+            if clean_topic and clean_topic not in self.topics[category]:
+                self.topics[category].append(clean_topic)
+
+        return True

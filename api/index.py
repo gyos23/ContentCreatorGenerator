@@ -164,6 +164,34 @@ def get_framework(framework_type):
         }), 500
 
 
+@app.route('/api/generate/custom', methods=['POST'])
+def generate_custom():
+    """Generate content based on user's custom topic/idea"""
+    try:
+        data = request.get_json() or {}
+        user_topic = data.get('topic', '').strip()
+        content_type = data.get('content_type', 'reel')
+        num_tips = data.get('num_tips', 3)
+
+        if not user_topic:
+            return jsonify({
+                'success': False,
+                'error': 'Please provide a topic'
+            }), 400
+
+        result = generator.generate_custom_content(user_topic, content_type, num_tips)
+
+        return jsonify({
+            'success': True,
+            'content': result
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 # For Vercel serverless function
 def handler(request):
     """Vercel serverless function handler"""
