@@ -6,42 +6,59 @@ Available in two versions:
 - **Web App** - Beautiful web interface (deploy on Vercel)
 - **CLI App** - Command-line interface for local use
 
-## Quick Start
+## 🚀 Quick Start
 
-### Option 1: Web App (Recommended for Vercel)
+### 💻 Run Locally (Easiest!)
 
-#### Deploy to Vercel
-1. Push your code to GitHub
-2. Go to [vercel.com](https://vercel.com) and sign in
-3. Click "New Project"
-4. Import your repository
-5. Vercel will auto-detect the settings
-6. Click "Deploy"
-
-Your app will be live in minutes!
-
-#### Run Locally (Web Version)
+**Mac/Linux:**
 ```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Run the Flask server
-python api/index.py
-
-# Open browser to http://localhost:5000
+cd /Users/your-name/ContentCreatorGenerator
+./run.sh
 ```
 
-### Option 2: CLI App (Command Line)
+**Windows:**
+```cmd
+cd C:\Users\YourName\ContentCreatorGenerator
+run.bat
+```
 
+The launcher will let you choose:
+1. CLI Version (terminal interface)
+2. Web Version (browser at localhost:5000)
+
+**❌ Getting "No such file" error?** → See [LOCAL_SETUP.md](LOCAL_SETUP.md) for detailed fix
+
+---
+
+### 🌐 Deploy to Vercel
+
+**Quick Deploy:**
+1. Go to [vercel.com](https://vercel.com) and sign in with GitHub
+2. Click "New Project" → Import "ContentCreatorGenerator"
+3. Click "Deploy" (no configuration needed!)
+4. Your app is live in 1-2 minutes! 🎉
+
+**❌ Getting 404 error on Vercel?** → See [VERCEL_DEPLOY.md](VERCEL_DEPLOY.md) for detailed fix
+
+---
+
+### 🔧 Manual Setup
+
+**Web Version:**
 ```bash
-# Navigate to the repository
 cd ContentCreatorGenerator
+pip3 install Flask flask-cors
+python3 api/index.py
+# Open http://localhost:5000
+```
 
-# Run the CLI app (Python 3.7+ required, no dependencies needed)
+**CLI Version:**
+```bash
+cd ContentCreatorGenerator
 python3 content_generator.py
 ```
 
-### Features
+### ✨ Features
 
 1. **Instagram Reel Generator** - Create full 60-second reel scripts with:
    - Problem-solution format
@@ -57,6 +74,12 @@ python3 content_generator.py
    - Listicle Framework
 
 4. **Quick Content Ideas** - Get instant content ideas for rapid creation
+
+5. **✨ Custom Topic Generator (NEW!)** - Enter YOUR OWN ideas:
+   - Type any topic you're thinking about
+   - Get full reels, hooks, or quick ideas
+   - All content in your unique style
+   - Perfect for spontaneous content creation
 
 ### How to Use
 

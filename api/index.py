@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sys
 import os
@@ -7,7 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from content_generator_core import ContentGenerator
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../public', static_url_path='')
 CORS(app)
 
 # Initialize generator
@@ -17,6 +17,16 @@ generator = ContentGenerator()
 @app.route('/')
 def home():
     """Serve the main page"""
+    try:
+        # Try to serve from parent directory
+        index_path = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'index.html')
+        if os.path.exists(index_path):
+            with open(index_path, 'r') as f:
+                return f.read()
+    except:
+        pass
+
+    # Fallback to API info page
     return """
     <!DOCTYPE html>
     <html>
@@ -28,7 +38,6 @@ def home():
     <body>
         <h1>Social Media Content Generator API</h1>
         <p>Welcome! The API is running.</p>
-        <p>Visit <a href="/app">/app</a> for the content generator interface.</p>
 
         <h2>Available Endpoints:</h2>
         <ul>
@@ -36,6 +45,7 @@ def home():
             <li>POST /api/generate/reel - Generate Instagram Reel</li>
             <li>POST /api/generate/hooks - Generate content hooks</li>
             <li>GET /api/frameworks - Get content frameworks</li>
+            <li>POST /api/generate/custom - Generate custom content</li>
         </ul>
     </body>
     </html>
