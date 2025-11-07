@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import sys
 import os
@@ -7,7 +7,7 @@ import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from content_generator_core import ContentGenerator
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='../public', static_url_path='')
 CORS(app)
 
 # Initialize generator
@@ -17,6 +17,24 @@ generator = ContentGenerator()
 @app.route('/')
 def home():
     """Serve the main page"""
+    # Try multiple paths to find index.html
+    possible_paths = [
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), 'index.html'),
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', 'index.html'),
+        '/var/task/index.html',  # Vercel path
+        './index.html',
+        '../index.html',
+    ]
+
+    for index_path in possible_paths:
+        try:
+            if os.path.exists(index_path):
+                with open(index_path, 'r', encoding='utf-8') as f:
+                    return f.read(), 200, {'Content-Type': 'text/html; charset=utf-8'}
+        except Exception as e:
+            continue
+
+    # Fallback to API info page
     return """
     <!DOCTYPE html>
     <html>
@@ -24,22 +42,39 @@ def home():
         <title>Social Media Content Generator</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            body { font-family: system-ui; max-width: 800px; margin: 40px auto; padding: 20px; }
+            h1 { color: #667eea; }
+            .error { background: #fff3cd; padding: 15px; border-radius: 8px; margin: 20px 0; }
+            ul { line-height: 2; }
+        </style>
     </head>
     <body>
-        <h1>Social Media Content Generator API</h1>
-        <p>Welcome! The API is running.</p>
-        <p>Visit <a href="/app">/app</a> for the content generator interface.</p>
+        <h1>🎬 Social Media Content Generator API</h1>
+        <div class="error">
+            <strong>Note:</strong> Web interface could not be loaded. Using API endpoints directly.
+        </div>
 
-        <h2>Available Endpoints:</h2>
+        <h2>✅ API is Running</h2>
+        <p>Available Endpoints:</p>
         <ul>
-            <li>GET /api/topics - Get all available topics</li>
-            <li>POST /api/generate/reel - Generate Instagram Reel</li>
-            <li>POST /api/generate/hooks - Generate content hooks</li>
-            <li>GET /api/frameworks - Get content frameworks</li>
+            <li><strong>GET /api/topics</strong> - Get all available topics</li>
+            <li><strong>POST /api/generate/reel</strong> - Generate Instagram Reel</li>
+            <li><strong>POST /api/generate/hooks</strong> - Generate content hooks</li>
+            <li><strong>POST /api/generate/quick-ideas</strong> - Generate quick ideas</li>
+            <li><strong>GET /api/frameworks</strong> - Get content frameworks</li>
+            <li><strong>POST /api/generate/custom</strong> - Generate custom content</li>
         </ul>
+
+        <h3>Example API Call:</h3>
+        <pre style="background: #f5f5f5; padding: 15px; border-radius: 5px; overflow-x: auto;">
+curl -X POST https://your-app.vercel.app/api/generate/reel \\
+  -H "Content-Type: application/json" \\
+  -d '{"topic": "building confidence", "num_tips": 3}'
+        </pre>
     </body>
     </html>
-    """
+    """, 200, {'Content-Type': 'text/html; charset=utf-8'}
 
 
 @app.route('/api/topics', methods=['GET'])
@@ -192,12 +227,22 @@ def generate_custom():
         }), 500
 
 
+# Catch-all route for SPA (must be last)
+@app.route('/<path:path>')
+def catch_all(path):
+    """Catch all routes and serve index.html for SPA routing"""
+    # If it's an API call that didn't match, return 404
+    if path.startswith('api/'):
+        return jsonify({'error': 'Endpoint not found'}), 404
+
+    # Otherwise serve the main HTML page
+    return home()
+
+
 # For Vercel serverless function
-def handler(request):
-    """Vercel serverless function handler"""
-    with app.app_context():
-        return app.full_dispatch_request()
+# Vercel will use the app directly
+app_handler = app
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='0.0.0.0', port=5000)
