@@ -310,6 +310,12 @@
                 <div class="option-title">Content Frameworks</div>
                 <div class="option-description">View proven content structures and templates</div>
             </div>
+
+            <div class="option-card" onclick="showSection('custom')" style="border: 2px solid #28a745;">
+                <div class="option-icon">✨</div>
+                <div class="option-title">Custom Topic</div>
+                <div class="option-description">Enter your own idea and generate content in your style</div>
+            </div>
         </div>
 
         <!-- Instagram Reel Section -->
@@ -402,6 +408,38 @@
 
             <div id="frameworksOutput"></div>
         </div>
+
+        <!-- Custom Topic Section -->
+        <div id="customSection" class="content-area">
+            <h2>✨ Generate Content from Your Own Topic</h2>
+            <p style="color: #666; margin-bottom: 20px;">Enter any topic or idea you have, and I'll generate content in your unique style!</p>
+
+            <form id="customForm" onsubmit="generateCustom(event)">
+                <div class="form-group">
+                    <label for="customTopic">Your Topic or Idea:</label>
+                    <input type="text" id="customTopic" placeholder="e.g., dealing with imposter syndrome, starting a side hustle, morning routines..." required style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 1rem;">
+                </div>
+
+                <div class="form-group">
+                    <label for="customContentType">Content Type:</label>
+                    <select id="customContentType" required>
+                        <option value="reel">Full Instagram Reel (60 seconds)</option>
+                        <option value="hooks">Content Hooks Only</option>
+                        <option value="quick_idea">Quick Content Idea</option>
+                    </select>
+                </div>
+
+                <div class="form-group" id="customTipsGroup">
+                    <label for="customNumTips">Number of Tips (1-5):</label>
+                    <input type="number" id="customNumTips" min="1" max="5" value="3" required>
+                </div>
+
+                <button type="button" class="btn back-btn" onclick="showMenu()">Back</button>
+                <button type="submit" class="btn" style="background: linear-gradient(135deg, #28a745 0%, #20c997 100%);">✨ Generate My Content</button>
+            </form>
+
+            <div id="customOutput"></div>
+        </div>
     </div>
 
     <script>
@@ -415,7 +453,8 @@
                 'reel': 'reelSection',
                 'hooks': 'hooksSection',
                 'quick': 'quickSection',
-                'frameworks': 'frameworksSection'
+                'frameworks': 'frameworksSection',
+                'custom': 'customSection'
             };
 
             document.getElementById(sectionMap[section]).classList.add('active');
@@ -430,6 +469,7 @@
             document.getElementById('hooksOutput').innerHTML = '';
             document.getElementById('quickOutput').innerHTML = '';
             document.getElementById('frameworksOutput').innerHTML = '';
+            document.getElementById('customOutput').innerHTML = '';
         }
 
         function showLoading(elementId) {
@@ -663,6 +703,146 @@
                 `;
             }
         }
+
+        async function generateCustom(event) {
+            event.preventDefault();
+            showLoading('customOutput');
+
+            const topic = document.getElementById('customTopic').value;
+            const contentType = document.getElementById('customContentType').value;
+            const numTips = parseInt(document.getElementById('customNumTips').value);
+
+            try {
+                const response = await fetch(`${API_BASE}/api/generate/custom`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        topic: topic,
+                        content_type: contentType,
+                        num_tips: numTips
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    const content = data.content;
+                    let html = '';
+
+                    // Handle different content types
+                    if (contentType === 'reel' && content.structure) {
+                        // Full reel - use same format as generateReel
+                        html = `
+                            <div class="output">
+                                <div class="output-section">
+                                    <h3>📱 ${content.topic.toUpperCase()} - ${content.duration}</h3>
+                                    <p style="color: #28a745; margin-bottom: 10px;"><strong>✨ Custom Topic:</strong> "${content.original_input}"</p>
+                                    <button class="btn copy-btn" onclick="copyToClipboard(\`${content.full_script.replace(/`/g, '\\`')}\`, this)">📋 Copy Full Script</button>
+                                    <div class="script-box">${content.full_script}</div>
+                                </div>
+
+                                <div class="output-section">
+                                    <h3>📋 Detailed Breakdown</h3>
+
+                                    <div class="tip-item">
+                                        <h4>🎣 HOOK (${content.structure.hook.timestamp})</h4>
+                                        <p><strong>Visual:</strong> ${content.structure.hook.visual}</p>
+                                        <p><strong>Script:</strong> ${content.structure.hook.script}</p>
+                                    </div>
+
+                                    <div class="tip-item">
+                                        <h4>👋 INTRO (${content.structure.intro.timestamp})</h4>
+                                        <p><strong>Visual:</strong> ${content.structure.intro.visual}</p>
+                                        <p><strong>Script:</strong> ${content.structure.intro.script}</p>
+                                    </div>
+
+                                    <div class="tip-item">
+                                        <h4>🔄 TRANSITION (${content.structure.transition.timestamp})</h4>
+                                        <p><strong>Visual:</strong> ${content.structure.transition.visual}</p>
+                                        <p><strong>Script:</strong> ${content.structure.transition.script}</p>
+                                    </div>
+
+                                    ${content.structure.tips.map(tip => `
+                                        <div class="tip-item">
+                                            <h4><span class="tip-number">💡 TIP #${tip.number}</span> (${tip.timestamp})</h4>
+                                            <p><strong>Title:</strong> ${tip.title.toUpperCase()}</p>
+                                            <p><strong>Visual:</strong> ${tip.visual}</p>
+                                            <p><strong>Script:</strong> ${tip.script}</p>
+                                        </div>
+                                    `).join('')}
+
+                                    <div class="tip-item">
+                                        <h4>📢 CALL TO ACTION (${content.structure.cta.timestamp})</h4>
+                                        <p><strong>Visual:</strong> ${content.structure.cta.visual}</p>
+                                        <p><strong>Script:</strong> ${content.structure.cta.script}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    } else if (contentType === 'hooks' && content.hooks) {
+                        // Content hooks
+                        html = `
+                            <div class="output">
+                                <div class="output-section">
+                                    <h3>🎣 Your Custom Hooks for "${content.original_input}"</h3>
+                                    ${content.hooks.map((hook, index) => `
+                                        <div class="hook-item">
+                                            <h4>Hook ${index + 1}</h4>
+                                            <p>${hook}</p>
+                                            <button class="btn copy-btn" onclick="copyToClipboard('${hook.replace(/'/g, "\\'")}', this)">📋 Copy Hook</button>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        `;
+                    } else if (contentType === 'quick_idea') {
+                        // Quick idea
+                        html = `
+                            <div class="output">
+                                <div class="output-section">
+                                    <h3>⚡ Quick Content Idea</h3>
+                                    <div class="hook-item">
+                                        <h4>${content.topic.toUpperCase()}</h4>
+                                        <p style="color: #28a745; margin-bottom: 10px;"><strong>✨ Your Topic:</strong> "${content.original_input}"</p>
+                                        <p><strong>Hook:</strong> ${content.hook}</p>
+                                        <p><strong>Format:</strong> ${content.format}</p>
+                                        <p><strong>Suggested Framework:</strong> ${content.suggested_framework}</p>
+                                        <p><strong>CTA:</strong> ${content.cta}</p>
+                                        <button class="btn copy-btn" onclick="copyToClipboard('${content.hook.replace(/'/g, "\\'")}', this)">📋 Copy Hook</button>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }
+
+                    document.getElementById('customOutput').innerHTML = html;
+                } else {
+                    throw new Error(data.error || 'Failed to generate custom content');
+                }
+            } catch (error) {
+                document.getElementById('customOutput').innerHTML = `
+                    <div class="output">
+                        <p style="color: red;">Error: ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Show/hide tips input based on content type
+        document.addEventListener('DOMContentLoaded', function() {
+            const contentTypeSelect = document.getElementById('customContentType');
+            const tipsGroup = document.getElementById('customTipsGroup');
+
+            if (contentTypeSelect) {
+                contentTypeSelect.addEventListener('change', function() {
+                    if (this.value === 'quick_idea') {
+                        tipsGroup.style.display = 'none';
+                    } else {
+                        tipsGroup.style.display = 'block';
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
