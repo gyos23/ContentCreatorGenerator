@@ -614,6 +614,144 @@ class HookPoints:
             return f"Let's talk about {topic}"
 
 
+class VideoShotLibrary:
+    """Library of video types and shot types for visual variety"""
+
+    VIDEO_TYPES = {
+        "b_roll_storyteller": {
+            "name": "B-Roll Storyteller",
+            "description": "Overlay visuals of you working, writing, coaching, traveling, or with your planner while your voice narrates.",
+            "best_for": "Tips, motivation, or storytelling posts",
+            "suggested_shots": ["Close-Up", "Detail/Macro", "POV", "Tracking/Movement"]
+        },
+        "micro_documentary": {
+            "name": "Micro-Documentary",
+            "description": "Mix interviews (of you or others), B-roll, and ambient sound.",
+            "best_for": "Behind the brand or 'what I've learned as a coach' pieces",
+            "suggested_shots": ["Medium Shot", "Close-Up", "Cutaway/Insert", "Wide Shot"]
+        },
+        "day_in_life": {
+            "name": "Day-in-the-Life / Workflow",
+            "description": "Real moments—morning routine, content setup, client calls, journaling.",
+            "best_for": "Authenticity and relatability",
+            "suggested_shots": ["Wide Shot", "POV", "Detail/Macro", "Tracking/Movement"]
+        },
+        "tutorial_demo": {
+            "name": "Tutorial / Demo",
+            "description": "Show your planner in action, a journaling method, or productivity technique.",
+            "best_for": "Educational content, how-to guides",
+            "suggested_shots": ["Over-the-Shoulder", "Close-Up", "Detail/Macro", "Medium Shot"]
+        },
+        "voiceover_reel": {
+            "name": "Voiceover Reel",
+            "description": "No talking head at all — just clips + music + your narration.",
+            "best_for": "Motivational or emotional posts",
+            "suggested_shots": ["Cinematic", "Detail/Macro", "Wide Shot", "Tracking/Movement"]
+        },
+        "reaction_duet": {
+            "name": "Reaction / Duet",
+            "description": "React to a trending clip, quote, or topic.",
+            "best_for": "Quick engagement boost; lets you show personality",
+            "suggested_shots": ["Medium Shot", "Close-Up", "Split Screen"]
+        },
+        "text_motion": {
+            "name": "Text-Only with Motion",
+            "description": "On-screen text with music, ambient video, or minimalist motion graphics.",
+            "best_for": "Clean way to drop quotes or '1-minute takeaways'",
+            "suggested_shots": ["Wide Shot", "Detail/Macro", "Cinematic"]
+        },
+        "cinematic_sequence": {
+            "name": "Cinematic Sequence",
+            "description": "Use slow motion, lens flares, or natural light transitions to set a mood.",
+            "best_for": "Branding intros, promo reels, or seasonal posts",
+            "suggested_shots": ["Wide Shot", "Close-Up", "Low Angle", "Tracking/Movement"]
+        }
+    }
+
+    SHOT_TYPES = {
+        "wide_shot": {
+            "name": "Wide Shot (Establishing)",
+            "description": "Sets the scene — office, coffee shop, street.",
+            "best_for": "Opening context or transitions",
+            "examples": ["Office overview", "Coffee shop exterior", "Street scene"]
+        },
+        "medium_shot": {
+            "name": "Medium Shot",
+            "description": "Waist-up, your go-to for natural conversation or gestures.",
+            "best_for": "Natural conversation, presenting tips",
+            "examples": ["Talking to camera", "Gesturing while explaining"]
+        },
+        "close_up": {
+            "name": "Close-Up",
+            "description": "Focus on expressions or objects — writing in planner, flipping a page, sipping coffee.",
+            "best_for": "Intimacy and detail",
+            "examples": ["Facial expressions", "Hand writing", "Coffee cup"]
+        },
+        "over_shoulder": {
+            "name": "Over-the-Shoulder (OTS)",
+            "description": "Great for tutorials, journaling, or showing a client call setup.",
+            "best_for": "Tutorials, showing work in progress",
+            "examples": ["Writing in planner", "Typing on laptop", "Reading notes"]
+        },
+        "pov": {
+            "name": "POV (Point-of-View)",
+            "description": "Your hands typing, holding your phone, walking.",
+            "best_for": "Immersive and personal moments",
+            "examples": ["Walking forward", "Hands typing", "Opening a door"]
+        },
+        "cutaway": {
+            "name": "Cutaway / Insert Shot",
+            "description": "B-roll that matches your script — e.g., 'I had to pause and reset' → show you exhaling or closing a notebook.",
+            "best_for": "Emphasizing key moments in narration",
+            "examples": ["Closing notebook", "Deep breath", "Looking away"]
+        },
+        "tracking": {
+            "name": "Tracking / Movement Shot",
+            "description": "You walking through a hallway or into a room.",
+            "best_for": "Adding life, direction, and momentum",
+            "examples": ["Walking through office", "Entering room", "Moving through space"]
+        },
+        "angle_shot": {
+            "name": "Low Angle / High Angle",
+            "description": "Low = power and confidence. High = vulnerability or reflection.",
+            "best_for": "Setting tone and emotion",
+            "examples": ["Low: looking powerful", "High: looking vulnerable"]
+        },
+        "detail_macro": {
+            "name": "Detail / Macro",
+            "description": "Pen tip, hand on planner, morning coffee pour.",
+            "best_for": "Texture and rhythm in editing",
+            "examples": ["Pen writing", "Coffee pouring", "Page turning"]
+        }
+    }
+
+    @classmethod
+    def get_all_video_types(cls) -> Dict:
+        """Get all video types"""
+        return cls.VIDEO_TYPES
+
+    @classmethod
+    def get_all_shot_types(cls) -> Dict:
+        """Get all shot types"""
+        return cls.SHOT_TYPES
+
+    @classmethod
+    def get_video_type(cls, video_type: str) -> Dict:
+        """Get a specific video type"""
+        return cls.VIDEO_TYPES.get(video_type, {})
+
+    @classmethod
+    def get_shot_type(cls, shot_type: str) -> Dict:
+        """Get a specific shot type"""
+        return cls.SHOT_TYPES.get(shot_type, {})
+
+    @classmethod
+    def suggest_shots_for_video(cls, video_type: str) -> List[str]:
+        """Suggest shot types for a specific video type"""
+        video = cls.VIDEO_TYPES.get(video_type, {})
+        return video.get("suggested_shots", [])
+
+
 class ContentGenerator:
     """Main content generator class with creative variety"""
 
@@ -623,6 +761,7 @@ class ContentGenerator:
         self.hook_library = HookLibrary()
         self.frameworks = MessagingFrameworks()
         self.hook_points = HookPoints()
+        self.video_shot_library = VideoShotLibrary()
 
     def load_topics(self) -> Dict:
         """Load content topics and themes"""

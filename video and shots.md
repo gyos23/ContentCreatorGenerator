@@ -1,3 +1,8 @@
+# 🎥 Video Types (Beyond Talking Head)
+
+These will give your feed variety, keep viewers engaged, and make your message hit harder.
+
+## B-Roll Storyteller
 🎥 Video Types (Beyond Talking Head)
 
 These will give your feed variety, keep viewers engaged, and make your message hit harder.
@@ -20,24 +25,33 @@ Real moments—morning routine, content setup, client calls, journaling.
 
 Perfect for authenticity and relatability.
 
-Tutorial / Demo
+## Tutorial / Demo
 
 Show your planner in action, a journaling method, or productivity technique.
 
 Mix over-the-shoulder + close-ups.
 
+## Voiceover Reel
 Voiceover Reel
 
 No talking head at all — just clips + music + your narration.
 
 Powerful for motivational or emotional posts.
 
+## Reaction / Duet
 Reaction / Duet
 
 React to a trending clip, quote, or topic.
 
 Quick engagement boost; lets you show personality.
 
+## Text-Only with Motion
+
+On-screen text with music, ambient video, or minimalist motion graphics.
+
+Clean way to drop quotes or "1-minute takeaways."
+
+## Cinematic Sequence
 Text-Only with Motion
 
 On-screen text with music, ambient video, or minimalist motion graphics.
@@ -50,6 +64,13 @@ Use slow motion, lens flares, or natural light transitions to set a mood.
 
 Great for branding intros, promo reels, or seasonal posts.
 
+---
+
+# 🎬 Shot Types (To Mix & Match)
+
+Think of these as your visual vocabulary.
+
+## 1. Wide Shot (Establishing)
 🎬 Shot Types (To Mix & Match)
 
 Think of these as your visual vocabulary.
@@ -60,6 +81,11 @@ Sets the scene — office, coffee shop, street.
 
 Good for opening context or transitions.
 
+## 2. Medium Shot
+
+Waist-up, your go-to for natural conversation or gestures.
+
+## 3. Close-Up
 2. Medium Shot
 
 Waist-up, your go-to for natural conversation or gestures.
@@ -70,18 +96,25 @@ Focus on expressions or objects — writing in planner, flipping a page, sipping
 
 Adds intimacy and detail.
 
+## 4. Over-the-Shoulder (OTS)
 4. Over-the-Shoulder (OTS)
 
 Great for tutorials, journaling, or showing a client call setup.
 
 Puts the audience in your POV.
 
+## 5. POV (Point-of-View)
 5. POV (Point-of-View)
 
 Your hands typing, holding your phone, walking.
 
 Immersive and personal.
 
+## 6. Cutaway / Insert Shot
+
+B-roll that matches your script — e.g., "I had to pause and reset" → show you exhaling or closing a notebook.
+
+## 7. Tracking / Movement Shot
 6. Cutaway / Insert Shot
 
 B-roll that matches your script — e.g., “I had to pause and reset” → show you exhaling or closing a notebook.
@@ -92,12 +125,14 @@ You walking through a hallway or into a room.
 
 Adds life, direction, and momentum.
 
+## 8. Low Angle / High Angle
 8. Low Angle / High Angle
 
 Low = power and confidence.
 
 High = vulnerability or reflection.
 
+## 9. Detail / Macro
 9. Detail / Macro
 
 Pen tip, hand on planner, morning coffee pour.
