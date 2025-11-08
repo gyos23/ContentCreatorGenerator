@@ -316,6 +316,12 @@
                 <div class="option-title">Custom Topic</div>
                 <div class="option-description">Enter your own idea and generate content in your style</div>
             </div>
+
+            <div class="option-card" onclick="showSection('video')">
+                <div class="option-icon">🎬</div>
+                <div class="option-title">Video & Shot Planner</div>
+                <div class="option-description">Mix and match video types and shot styles for visual variety</div>
+            </div>
         </div>
 
         <!-- Instagram Reel Section -->
@@ -440,6 +446,39 @@
 
             <div id="customOutput"></div>
         </div>
+
+        <!-- Video & Shot Planner Section -->
+        <div id="videoSection" class="content-area">
+            <h2>🎬 Video & Shot Planner</h2>
+            <p style="color: #666; margin-bottom: 20px;">Mix and match video types and shot styles to create visual variety and keep your audience engaged!</p>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 30px;">
+                <!-- Video Types Column -->
+                <div>
+                    <h3 style="color: #667eea; margin-bottom: 15px;">🎥 Video Types</h3>
+                    <p style="font-size: 0.9rem; color: #888; margin-bottom: 15px;">Select video types to explore (click to see suggested shots)</p>
+                    <div id="videoTypesList" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Video types will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Shot Types Column -->
+                <div>
+                    <h3 style="color: #764ba2; margin-bottom: 15px;">📸 Shot Types</h3>
+                    <p style="font-size: 0.9rem; color: #888; margin-bottom: 15px;">Browse shot styles to mix and match</p>
+                    <div id="shotTypesList" style="display: flex; flex-direction: column; gap: 10px;">
+                        <!-- Shot types will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="videoShotDetails" style="margin-top: 30px; padding: 20px; background: #f8f9fa; border-radius: 12px; display: none;">
+                <h3 style="color: #667eea; margin-bottom: 15px;">Selected Details</h3>
+                <div id="selectionDetails"></div>
+            </div>
+
+            <button type="button" class="btn back-btn" onclick="showMenu()" style="margin-top: 20px;">Back to Menu</button>
+        </div>
     </div>
 
     <script>
@@ -454,10 +493,16 @@
                 'hooks': 'hooksSection',
                 'quick': 'quickSection',
                 'frameworks': 'frameworksSection',
-                'custom': 'customSection'
+                'custom': 'customSection',
+                'video': 'videoSection'
             };
 
             document.getElementById(sectionMap[section]).classList.add('active');
+
+            // Load video/shot data when video section is shown
+            if (section === 'video') {
+                loadVideoShotData();
+            }
         }
 
         function showMenu() {
@@ -826,6 +871,141 @@
                     </div>
                 `;
             }
+        }
+
+        // Video & Shot Planner Functions
+        async function loadVideoShotData() {
+            try {
+                // Load video types
+                const videoResponse = await fetch(`${API_BASE}/api/video-types`);
+                const videoData = await videoResponse.json();
+
+                if (videoData.success) {
+                    displayVideoTypes(videoData.video_types);
+                }
+
+                // Load shot types
+                const shotResponse = await fetch(`${API_BASE}/api/shot-types`);
+                const shotData = await shotResponse.json();
+
+                if (shotData.success) {
+                    displayShotTypes(shotData.shot_types);
+                }
+            } catch (error) {
+                console.error('Error loading video/shot data:', error);
+            }
+        }
+
+        function displayVideoTypes(videoTypes) {
+            const container = document.getElementById('videoTypesList');
+            container.innerHTML = '';
+
+            Object.entries(videoTypes).forEach(([key, video]) => {
+                const card = document.createElement('div');
+                card.style.cssText = 'padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0; cursor: pointer; transition: all 0.3s;';
+                card.innerHTML = `
+                    <div style="font-weight: bold; color: #667eea; margin-bottom: 5px;">${video.name}</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-bottom: 8px;">${video.description}</div>
+                    <div style="font-size: 0.8rem; color: #888;"><strong>Best for:</strong> ${video.best_for}</div>
+                `;
+                card.onclick = () => showVideoDetails(key, video);
+                card.onmouseenter = () => card.style.borderColor = '#667eea';
+                card.onmouseleave = () => card.style.borderColor = '#e0e0e0';
+                container.appendChild(card);
+            });
+        }
+
+        function displayShotTypes(shotTypes) {
+            const container = document.getElementById('shotTypesList');
+            container.innerHTML = '';
+
+            Object.entries(shotTypes).forEach(([key, shot]) => {
+                const card = document.createElement('div');
+                card.style.cssText = 'padding: 15px; background: white; border-radius: 8px; border: 2px solid #e0e0e0; cursor: pointer; transition: all 0.3s;';
+                card.innerHTML = `
+                    <div style="font-weight: bold; color: #764ba2; margin-bottom: 5px;">${shot.name}</div>
+                    <div style="font-size: 0.85rem; color: #666; margin-bottom: 8px;">${shot.description}</div>
+                    <div style="font-size: 0.8rem; color: #888;"><strong>Best for:</strong> ${shot.best_for}</div>
+                `;
+                card.onclick = () => showShotDetails(shot);
+                card.onmouseenter = () => card.style.borderColor = '#764ba2';
+                card.onmouseleave = () => card.style.borderColor = '#e0e0e0';
+                container.appendChild(card);
+            });
+        }
+
+        async function showVideoDetails(key, video) {
+            const detailsDiv = document.getElementById('videoShotDetails');
+            const selectionDiv = document.getElementById('selectionDetails');
+
+            // Get suggested shots for this video type
+            try {
+                const response = await fetch(`${API_BASE}/api/video-shots/${key}`);
+                const data = await response.json();
+
+                let suggestedHtml = '';
+                if (data.success && data.suggested_shots && data.suggested_shots.length > 0) {
+                    suggestedHtml = `
+                        <div style="margin-top: 15px; padding: 15px; background: #e8f4f8; border-radius: 8px;">
+                            <strong style="color: #667eea;">💡 Suggested Shot Types:</strong>
+                            <div style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 8px;">
+                                ${data.suggested_shots.map(shot =>
+                                    `<span style="padding: 6px 12px; background: white; border-radius: 20px; font-size: 0.85rem; border: 1px solid #667eea;">${shot}</span>`
+                                ).join('')}
+                            </div>
+                        </div>
+                    `;
+                }
+
+                selectionDiv.innerHTML = `
+                    <div style="padding: 20px; background: white; border-radius: 8px; border-left: 4px solid #667eea;">
+                        <h4 style="color: #667eea; margin-top: 0;">🎥 ${video.name}</h4>
+                        <p style="color: #666; margin: 10px 0;"><strong>Description:</strong> ${video.description}</p>
+                        <p style="color: #666; margin: 10px 0;"><strong>Best For:</strong> ${video.best_for}</p>
+                        ${suggestedHtml}
+                        <div style="margin-top: 15px; padding: 10px; background: #f0f7ff; border-radius: 6px; font-size: 0.9rem;">
+                            <strong>💡 Pro Tip:</strong> Mix this video type with the suggested shots above for the best results. Click on shot types in the right column to see more details!
+                        </div>
+                    </div>
+                `;
+
+                detailsDiv.style.display = 'block';
+                detailsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            } catch (error) {
+                console.error('Error loading video details:', error);
+            }
+        }
+
+        function showShotDetails(shot) {
+            const detailsDiv = document.getElementById('videoShotDetails');
+            const selectionDiv = document.getElementById('selectionDetails');
+
+            let examplesHtml = '';
+            if (shot.examples && shot.examples.length > 0) {
+                examplesHtml = `
+                    <div style="margin-top: 15px;">
+                        <strong style="color: #764ba2;">Examples:</strong>
+                        <ul style="margin: 10px 0; padding-left: 20px; color: #666;">
+                            ${shot.examples.map(ex => `<li>${ex}</li>`).join('')}
+                        </ul>
+                    </div>
+                `;
+            }
+
+            selectionDiv.innerHTML = `
+                <div style="padding: 20px; background: white; border-radius: 8px; border-left: 4px solid #764ba2;">
+                    <h4 style="color: #764ba2; margin-top: 0;">📸 ${shot.name}</h4>
+                    <p style="color: #666; margin: 10px 0;"><strong>Description:</strong> ${shot.description}</p>
+                    <p style="color: #666; margin: 10px 0;"><strong>Best For:</strong> ${shot.best_for}</p>
+                    ${examplesHtml}
+                    <div style="margin-top: 15px; padding: 10px; background: #f9f0ff; border-radius: 6px; font-size: 0.9rem;">
+                        <strong>💡 Pro Tip:</strong> Combine multiple shot types throughout your video to maintain visual interest and keep viewers engaged!
+                    </div>
+                </div>
+            `;
+
+            detailsDiv.style.display = 'block';
+            detailsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }
 
         // Show/hide tips input based on content type

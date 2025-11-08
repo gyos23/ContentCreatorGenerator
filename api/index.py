@@ -227,6 +227,62 @@ def generate_custom():
         }), 500
 
 
+@app.route('/api/video-types', methods=['GET'])
+def get_video_types():
+    """Get all video types for mix-and-match"""
+    try:
+        from content_generator_core import VideoShotLibrary
+        video_types = VideoShotLibrary.get_all_video_types()
+
+        return jsonify({
+            'success': True,
+            'video_types': video_types
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/shot-types', methods=['GET'])
+def get_shot_types():
+    """Get all shot types for mix-and-match"""
+    try:
+        from content_generator_core import VideoShotLibrary
+        shot_types = VideoShotLibrary.get_all_shot_types()
+
+        return jsonify({
+            'success': True,
+            'shot_types': shot_types
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/video-shots/<video_type>', methods=['GET'])
+def get_suggested_shots(video_type):
+    """Get suggested shot types for a specific video type"""
+    try:
+        from content_generator_core import VideoShotLibrary
+        suggested = VideoShotLibrary.suggest_shots_for_video(video_type)
+        video_info = VideoShotLibrary.get_video_type(video_type)
+
+        return jsonify({
+            'success': True,
+            'video_type': video_info,
+            'suggested_shots': suggested
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 # Catch-all route for SPA (must be last)
 @app.route('/<path:path>')
 def catch_all(path):
