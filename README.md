@@ -158,9 +158,3 @@ Hook: 3-5 seconds
 Intro: 5-8 seconds
 Each tip: 10-15 seconds
 CTA: 5 seconds
-
-
-The original script:
-
-Talking head video
-Negative people. The easiest thing to do is to get rid of negative people when you don't agree with them. But the reality is that's not always an option. Hi my name is Dorian. I'm a senior project manager for a major airline by day and by night I share content with thousands of people focused on personal growth and development. [start B-roll] Whether in your community or at work [end B-roll] here are three ways to work with people you don't get along with. One limit your interaction Do what you have to do and get the job done, but you don't necessarily need to give them access to your energy. Two, try empathizing. [start B-roll] You don't have to like someone, but if you try to understand where they're coming [end B-roll] from you'd be surprised with a couple of questions coming from a genuine place how far that can take you in a relationship with someone. Three, set clear boundaries. [start B-roll] You have to let them know what's acceptable, what's not acceptable, [end B-roll] and then you have to personally respect your own boundaries. If they wanna live in negativity, that's cool, but you don't have to live there. If you found this helpful, follow along and share this with someone who might need it today. Let's grow together. [end visual]
