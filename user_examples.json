@@ -1,0 +1,67 @@
+{
+  "tips": {
+    "dealing with negative people": [
+      {
+        "title": "limit your interaction",
+        "explanation": "Do what you have to do and get the job done, but you don't necessarily need to give them access to your energy.",
+        "b_roll": false,
+        "notes": "From original script - performed well"
+      },
+      {
+        "title": "try empathizing",
+        "explanation": "[start B-roll] You don't have to like someone, but if you try to understand where they're coming [end B-roll] from you'd be surprised with a couple of questions coming from a genuine place how far that can take you in a relationship with someone.",
+        "b_roll": true,
+        "notes": "From original script - key insight"
+      },
+      {
+        "title": "set clear boundaries",
+        "explanation": "[start B-roll] You have to let them know what's acceptable, what's not acceptable, [end B-roll] and then you have to personally respect your own boundaries. If they wanna live in negativity, that's cool, but you don't have to live there.",
+        "b_roll": true,
+        "notes": "From original script - strong ending"
+      }
+    ]
+  },
+  "hooks": {
+    "dealing with negative people": [
+      {
+        "hook": "Negative people. The easiest thing to do is to get rid of negative people when you don't agree with them. But the reality is that's not always an option.",
+        "notes": "Original hook - honest, relatable problem statement"
+      }
+    ]
+  },
+  "full_scripts": [
+    {
+      "topic": "dealing with negative people",
+      "hook": "Negative people. The easiest thing to do is to get rid of negative people when you don't agree with them. But the reality is that's not always an option.",
+      "intro": "Hi my name is Dorian. I'm a senior project manager for a major airline by day and by night I share content with thousands of people focused on personal growth and development.",
+      "transition": "[start B-roll] Whether in your community or at work [end B-roll] here are three ways to work with people you don't get along with.",
+      "tips": [
+        {
+          "title": "limit your interaction",
+          "explanation": "Do what you have to do and get the job done, but you don't necessarily need to give them access to your energy.",
+          "b_roll": false
+        },
+        {
+          "title": "try empathizing",
+          "explanation": "[start B-roll] You don't have to like someone, but if you try to understand where they're coming [end B-roll] from you'd be surprised with a couple of questions coming from a genuine place how far that can take you in a relationship with someone.",
+          "b_roll": true
+        },
+        {
+          "title": "set clear boundaries",
+          "explanation": "[start B-roll] You have to let them know what's acceptable, what's not acceptable, [end B-roll] and then you have to personally respect your own boundaries. If they wanna live in negativity, that's cool, but you don't have to live there.",
+          "b_roll": true
+        }
+      ],
+      "cta": "If you found this helpful, follow along and share this with someone who might need it today. Let's grow together.",
+      "notes": "Original script example - good structure and flow",
+      "performance": "baseline"
+    }
+  ],
+  "_instructions": {
+    "how_to_add_tips": "Add new tips under the 'tips' section with the topic as the key. Each tip should have: title, explanation, b_roll (true/false), and optional notes.",
+    "how_to_add_hooks": "Add new hooks under the 'hooks' section with the topic as the key. Each hook should have: hook text and optional notes about why it works.",
+    "how_to_add_scripts": "Add complete scripts under 'full_scripts'. Include: topic, hook, intro, transition, tips array, cta, notes, and optional performance metrics.",
+    "priority": "The generator will PRIORITIZE your examples over built-in content. Your voice, your style, your proven content comes first.",
+    "notes_field": "Use 'notes' to remind yourself why this content works - high engagement, clarity, relatability, etc."
+  }
+}

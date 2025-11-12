@@ -777,6 +777,53 @@ class ContentGenerator:
         self.frameworks = MessagingFrameworks()
         self.hook_points = HookPoints()
         self.video_shot_library = VideoShotLibrary()
+        self.user_examples = self.load_user_examples()
+
+    def load_user_examples(self) -> Dict:
+        """Load user's own content examples - PRIORITIZED over built-in content"""
+        import os
+        user_file = os.path.join(os.path.dirname(__file__), 'user_examples.json')
+
+        try:
+            if os.path.exists(user_file):
+                with open(user_file, 'r', encoding='utf-8') as f:
+                    return json.load(f)
+        except Exception as e:
+            print(f"Note: Could not load user examples: {e}")
+
+        # Return empty structure if file doesn't exist or has errors
+        return {
+            "tips": {},
+            "hooks": {},
+            "full_scripts": []
+        }
+
+    def save_user_example(self, example_type: str, topic: str, content: Dict) -> bool:
+        """Save a new user example to the JSON file"""
+        import os
+        user_file = os.path.join(os.path.dirname(__file__), 'user_examples.json')
+
+        try:
+            # Add to current examples
+            if example_type == "tip":
+                if topic not in self.user_examples["tips"]:
+                    self.user_examples["tips"][topic] = []
+                self.user_examples["tips"][topic].append(content)
+            elif example_type == "hook":
+                if topic not in self.user_examples["hooks"]:
+                    self.user_examples["hooks"][topic] = []
+                self.user_examples["hooks"][topic].append(content)
+            elif example_type == "full_script":
+                self.user_examples["full_scripts"].append(content)
+
+            # Save to file
+            with open(user_file, 'w', encoding='utf-8') as f:
+                json.dump(self.user_examples, f, indent=2, ensure_ascii=False)
+
+            return True
+        except Exception as e:
+            print(f"Error saving user example: {e}")
+            return False
 
     def load_topics(self) -> Dict:
         """Load content topics and themes"""
@@ -892,6 +939,14 @@ class ContentGenerator:
 
     def _generate_creative_hook(self, topic: str) -> str:
         """Generate a hook using varied techniques"""
+
+        # PRIORITY 1: Check user's own hooks first (30% chance if available)
+        user_hooks = self.user_examples.get("hooks", {}).get(topic, [])
+        if user_hooks and random.random() < 0.3:
+            # Use user's proven hooks
+            return random.choice(user_hooks)["hook"]
+
+        # PRIORITY 2: Use generation methods
         # Randomly choose between different hook generation methods
         method = random.choice(['hook_library', 'hook_point', 'custom'])
 
@@ -971,7 +1026,15 @@ class ContentGenerator:
 
     def generate_tips(self, topic: str, count: int = 3) -> List[Dict]:
         """Generate actionable tips with REAL insights from expertise"""
-        # Tip bank with REAL insights, not generic platitudes
+
+        # PRIORITY 1: Check user's own examples first
+        user_tips = self.user_examples.get("tips", {}).get(topic, [])
+        if user_tips and len(user_tips) >= count:
+            # Use user's tips - they know their voice best
+            selected_tips = random.sample(user_tips, count)
+            return self._format_tips(selected_tips, count)
+
+        # PRIORITY 2: Built-in tip bank with REAL insights
         tip_bank = {
             "dealing with negative people": [
                 {
@@ -1223,21 +1286,34 @@ class ContentGenerator:
             ],
         }
 
-        # Get topic-specific tips or generate creative generic ones
-        if topic in tip_bank:
-            available_tips = tip_bank[topic]
-            # Randomly select from available tips
-            selected_tips = random.sample(available_tips, min(count, len(available_tips)))
-        else:
-            selected_tips = self.generate_creative_generic_tips(topic, count)
+        # PRIORITY 3: Mix user tips with built-in tips if needed
+        all_available_tips = []
 
-        # Format tips with timestamps and visuals
+        # Add user tips first (if any)
+        if user_tips:
+            all_available_tips.extend(user_tips)
+
+        # Add built-in tips
+        if topic in tip_bank:
+            all_available_tips.extend(tip_bank[topic])
+        else:
+            # Generate generic tips if no specific ones exist
+            all_available_tips.extend(self.generate_creative_generic_tips(topic, count))
+
+        # Select random mix
+        selected_tips = random.sample(all_available_tips, min(count, len(all_available_tips)))
+
+        return self._format_tips(selected_tips, count)
+
+    def _format_tips(self, tips: List[Dict], count: int) -> List[Dict]:
+        """Format tips with timestamps and visuals"""
         formatted_tips = []
         base_timestamp = 12
-        for i, tip in enumerate(selected_tips):
+
+        for i, tip in enumerate(tips[:count]):
             timestamp_start = base_timestamp + (i * 13)
             timestamp_end = timestamp_start + 13
-            visual = "Talking Head with B-roll overlay" if tip["b_roll"] else "Talking Head"
+            visual = "Talking Head with B-roll overlay" if tip.get("b_roll", False) else "Talking Head"
 
             formatted_tips.append({
                 "number": i + 1,

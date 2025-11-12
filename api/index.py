@@ -283,6 +283,57 @@ def get_suggested_shots(video_type):
         }), 500
 
 
+@app.route('/api/user-examples', methods=['GET'])
+def get_user_examples():
+    """Get all user examples"""
+    try:
+        examples = generator.user_examples
+        return jsonify({
+            'success': True,
+            'examples': examples
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
+@app.route('/api/user-examples/add', methods=['POST'])
+def add_user_example():
+    """Add a new user example (tip, hook, or full script)"""
+    try:
+        data = request.get_json() or {}
+        example_type = data.get('type')  # 'tip', 'hook', or 'full_script'
+        topic = data.get('topic', '')
+        content = data.get('content', {})
+
+        if not example_type or not content:
+            return jsonify({
+                'success': False,
+                'error': 'Missing required fields: type and content'
+            }), 400
+
+        success = generator.save_user_example(example_type, topic, content)
+
+        if success:
+            return jsonify({
+                'success': True,
+                'message': 'Example saved successfully'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'error': 'Failed to save example'
+            }), 500
+
+    except Exception as e:
+        return jsonify({
+            'success': False,
+            'error': str(e)
+        }), 500
+
+
 # Catch-all route for SPA (must be last)
 @app.route('/<path:path>')
 def catch_all(path):
