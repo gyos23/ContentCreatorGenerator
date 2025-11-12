@@ -21,17 +21,32 @@ class StyleGuide:
             "mission": "share content with thousands of people focused on personal growth and development"
         }
         self.signature_cta = "If you found this helpful, follow along and share this with someone who might need it today. Let's grow together."
-        self.tone = "conversational, empowering, actionable"
+        self.tone = "straightforward, no-BS, strategic, empathetic when necessary, hip hop authenticity"
 
     def get_intro(self) -> str:
         """Generate credibility statement with variations"""
         intros = [
             f"Hi my name is {self.name}. I'm a {self.credentials['day_job']} by day and by night I {self.credentials['mission']}.",
-            f"Hey, I'm {self.name}. By day I work as a {self.credentials['day_job']}, and in my free time I {self.credentials['mission']}.",
-            f"I'm {self.name}, a {self.credentials['day_job']} who's passionate about helping others grow. I {self.credentials['mission']}.",
-            f"Quick intro - I'm {self.name}. Day job: {self.credentials['day_job']}. But what I really love is helping people grow and develop.",
+            f"I'm {self.name}. {self.credentials['day_job']} by day, helping people grow by night.",
+            f"I'm {self.name}, a {self.credentials['day_job']}. I {self.credentials['mission']}.",
         ]
         return random.choice(intros)
+
+    def get_cta(self, content_type: str = "standard") -> str:
+        """Generate CTA with variations based on content type"""
+        ctas = {
+            "standard": self.signature_cta,
+            "share": "If this resonated with you, share it with someone who needs to hear it. Let's grow together.",
+            "follow": "Follow along for more real talk on growth and leadership. Let's grow together.",
+            "planner": f"{self.signature_cta.split('.')[0]}. Check out my planners in the link to take your growth to the next level.",
+            "clients": "If you're ready to level up your leadership or personal growth, let's connect. Link in bio. Let's grow together.",
+            "comment": "Drop a comment and let me know - which one hit different for you? Let's grow together.",
+        }
+
+        # Mostly return standard, sometimes vary
+        if random.random() < 0.15:  # 15% chance to vary
+            return random.choice(list(ctas.values()))
+        return ctas.get(content_type, self.signature_cta)
 
 
 class HookLibrary:
@@ -865,7 +880,7 @@ class ContentGenerator:
                 "cta": {
                     "timestamp": "55-60 seconds",
                     "visual": "Talking Head",
-                    "script": self.style.signature_cta
+                    "script": self.style.get_cta()  # Use varied CTAs
                 }
             }
         }
@@ -955,8 +970,8 @@ class ContentGenerator:
         return hooks
 
     def generate_tips(self, topic: str, count: int = 3) -> List[Dict]:
-        """Generate actionable tips with massive variety"""
-        # Expanded tip bank with many more variations
+        """Generate actionable tips with REAL insights from expertise"""
+        # Tip bank with REAL insights, not generic platitudes
         tip_bank = {
             "dealing with negative people": [
                 {
@@ -992,35 +1007,30 @@ class ContentGenerator:
             ],
             "building confidence": [
                 {
-                    "title": "celebrate small wins",
-                    "explanation": "Start tracking your daily accomplishments, no matter how small. [start B-roll] Confidence builds when you have evidence of your progress. [end B-roll]",
+                    "title": "confidence comes from doing, not feeling",
+                    "explanation": "[start B-roll] You're not going to feel ready. Do it anyway. [end B-roll] Confidence is built through evidence, and evidence comes from action.",
                     "b_roll": True
                 },
                 {
-                    "title": "practice self-compassion",
-                    "explanation": "[start B-roll] Talk to yourself like you'd talk to a friend. [end B-roll] When you mess up, acknowledge it without harsh criticism. Real confidence grows from self-acceptance.",
+                    "title": "track your wins, especially the small ones",
+                    "explanation": "Your brain forgets progress. [start B-roll] Write down what you accomplished, even the tiny stuff. [end B-roll] When doubt shows up, you've got receipts.",
                     "b_roll": True
                 },
                 {
-                    "title": "take action before you feel ready",
-                    "explanation": "[start B-roll] Confidence doesn't come before action, it comes from taking action. [end B-roll] Start small, but start now. Each step forward builds your belief in yourself.",
+                    "title": "stop waiting for external validation",
+                    "explanation": "[start B-roll] If you need everyone's approval, you'll never move. [end B-roll] Build internal confidence - know your worth independent of other people's opinions.",
                     "b_roll": True
                 },
                 {
-                    "title": "own your expertise",
-                    "explanation": "Stop downplaying what you know. [start B-roll] You've earned your knowledge through experience. [end B-roll] Share it with confidence.",
+                    "title": "competence builds confidence, not the other way around",
+                    "explanation": "Get good at something. [start B-roll] Real confidence comes from knowing you can deliver, not from affirmations. [end B-roll] Put in the reps.",
                     "b_roll": True
                 },
                 {
-                    "title": "reframe failure as feedback",
-                    "explanation": "[start B-roll] Every setback is data, not a judgment of your worth. [end B-roll] When you see mistakes as information, confidence becomes unshakeable.",
+                    "title": "comparison will kill your confidence",
+                    "explanation": "[start B-roll] You're comparing your behind-the-scenes to everyone else's highlight reel. [end B-roll] Stay in your lane. Focus on your own growth.",
                     "b_roll": True
                 },
-                {
-                    "title": "surround yourself with believers",
-                    "explanation": "The people around you shape your self-perception. [start B-roll] Choose relationships that reflect your potential back to you, [end B-roll] not your limitations.",
-                    "b_roll": True
-                }
             ],
             "overcoming self-doubt": [
                 {
@@ -1078,31 +1088,139 @@ class ContentGenerator:
             ],
             "leadership skills": [
                 {
-                    "title": "lead by example",
-                    "explanation": "[start B-roll] Your team watches what you do more than what you say. [end B-roll] Model the behavior and standards you expect from others.",
+                    "title": "make the call, then explain",
+                    "explanation": "In high-stakes environments, indecision costs more than a wrong decision. [start B-roll] Make the call with the info you have, then bring people along. [end B-roll] You can course-correct, but you can't lead from confusion.",
                     "b_roll": True
                 },
                 {
-                    "title": "develop your people",
-                    "explanation": "Great leaders create more leaders, not followers. [start B-roll] Invest in your team's growth. Their success is your success. [end B-roll]",
+                    "title": "your energy sets the tone",
+                    "explanation": "[start B-roll] If you're frantic, your team's frantic. If you're steady, they're steady. [end B-roll] You can't fake this - manage your state before you manage your team.",
                     "b_roll": True
                 },
                 {
-                    "title": "make decisions with clarity",
-                    "explanation": "[start B-roll] Indecision creates chaos. [end B-roll] Gather input, trust your judgment, and commit to a direction. You can adjust as you go.",
+                    "title": "build trust before you need it",
+                    "explanation": "When the pressure hits, it's too late to build relationships. [start B-roll] Invest in your people when things are calm [end B-roll] so they trust you when things get rough.",
                     "b_roll": True
                 },
                 {
-                    "title": "give credit freely",
-                    "explanation": "Secure leaders celebrate their team's wins. [start B-roll] When you shine a light on others, it reflects back on your leadership. [end B-roll]",
+                    "title": "say the hard thing early",
+                    "explanation": "[start B-roll] Address the issue when it's small, not when it's a crisis. [end B-roll] Real leaders don't avoid difficult conversations - they have them before they have to.",
                     "b_roll": True
                 },
                 {
-                    "title": "stay humble and curious",
-                    "explanation": "[start B-roll] The moment you think you know everything is when you stop growing. [end B-roll] Ask questions. Listen more than you speak.",
+                    "title": "develop your replacement",
+                    "explanation": "Your job isn't to be irreplaceable. [start B-roll] It's to build someone who can do your job so you can do the next one. [end B-roll] That's how you actually move up.",
                     "b_roll": True
-                }
-            ]
+                },
+            ],
+            "delegation skills": [
+                {
+                    "title": "match the task to the person's growth edge",
+                    "explanation": "Don't just delegate what you hate. [start B-roll] Match tasks to where someone's ready to stretch, not where they'll drown or coast. [end B-roll] That's how you build trust and capability at the same time.",
+                    "b_roll": True
+                },
+                {
+                    "title": "adjust your delivery to their personality",
+                    "explanation": "[start B-roll] Some people need context and the why. Others just want the what and when. [end B-roll] How you deliver the ask matters as much as what you're asking for.",
+                    "b_roll": True
+                },
+                {
+                    "title": "be clear about authority and expectations",
+                    "explanation": "Tell them exactly what decisions they can make without you. [start B-roll] Vague delegation creates confusion and kills momentum. [end B-roll] Clarity upfront saves everyone time later.",
+                    "b_roll": True
+                },
+                {
+                    "title": "follow up without micromanaging",
+                    "explanation": "[start B-roll] Check in at agreed milestones, not every five minutes. [end B-roll] You're building capability, not babysitting. Trust the process you set up.",
+                    "b_roll": True
+                },
+                {
+                    "title": "own the outcome, share the credit",
+                    "explanation": "When it goes well, shine the light on them. When it doesn't, that's on you as the leader. [start B-roll] That's how you build a team that runs through walls for you. [end B-roll]",
+                    "b_roll": True
+                },
+            ],
+            "time management": [
+                {
+                    "title": "protect your high-value hours",
+                    "explanation": "[start B-roll] Figure out when you do your best thinking. [end B-roll] Guard those hours for your most important work. Don't waste them on meetings that could be emails.",
+                    "b_roll": True
+                },
+                {
+                    "title": "time block, don't just to-do list",
+                    "explanation": "A to-do list tells you what. A time block tells you when. [start B-roll] If it's not on your calendar, it's not real. [end B-roll]",
+                    "b_roll": True
+                },
+                {
+                    "title": "batch similar tasks together",
+                    "explanation": "[start B-roll] Context switching kills productivity. [end B-roll] Group similar tasks - all your calls, all your deep work, all your admin. Your brain will thank you.",
+                    "b_roll": True
+                },
+                {
+                    "title": "build in buffer time",
+                    "explanation": "Back-to-back meetings all day is a setup for failure. [start B-roll] Leave 15 minutes between commitments. [end B-roll] You need space to think and transition.",
+                    "b_roll": True
+                },
+                {
+                    "title": "say no to protect your yes",
+                    "explanation": "[start B-roll] Every yes to something unimportant is a no to something that matters. [end B-roll] Be ruthless about what gets your time.",
+                    "b_roll": True
+                },
+            ],
+            "effective communication": [
+                {
+                    "title": "lead with the bottom line",
+                    "explanation": "Don't bury your point. [start B-roll] Start with what you need, then explain if needed. [end B-roll] Respect people's time - say it straight.",
+                    "b_roll": True
+                },
+                {
+                    "title": "match your communication to your audience",
+                    "explanation": "[start B-roll] Executives want the headline. Your team wants the context. [end B-roll] Same message, different delivery. Know who you're talking to.",
+                    "b_roll": True
+                },
+                {
+                    "title": "listen to understand, not to respond",
+                    "explanation": "If you're thinking about your response, you're not listening. [start B-roll] Hear them out fully before you speak. [end B-roll] Real communication is two-way.",
+                    "b_roll": True
+                },
+                {
+                    "title": "over-communicate in high-stakes situations",
+                    "explanation": "[start B-roll] When the stakes are high, assume nothing is understood. [end B-roll] Repeat key points. Confirm understanding. Clarity saves crises.",
+                    "b_roll": True
+                },
+                {
+                    "title": "own your mistakes immediately",
+                    "explanation": "If you mess up, say it fast. [start B-roll] Don't wait, don't spin, don't deflect. [end B-roll] Own it, fix it, move on. That's how you keep trust.",
+                    "b_roll": True
+                },
+            ],
+            "managing stress": [
+                {
+                    "title": "identify what you actually control",
+                    "explanation": "[start B-roll] Stress comes from trying to control what you can't. [end B-roll] Make a list - what can you influence, what can't you? Focus your energy accordingly.",
+                    "b_roll": True
+                },
+                {
+                    "title": "build buffers before you need them",
+                    "explanation": "In high-pressure jobs, you need margin built in. [start B-roll] Time buffers, energy buffers, financial buffers. [end B-roll] Stress hits hardest when you're running on empty.",
+                    "b_roll": True
+                },
+                {
+                    "title": "stress is information, not the enemy",
+                    "explanation": "[start B-roll] Your stress is telling you something. [end B-roll] Listen to it. What's actually overwhelming you? Don't just push through - address the root.",
+                    "b_roll": True
+                },
+                {
+                    "title": "protect your recovery time",
+                    "explanation": "You can sprint, but not forever. [start B-roll] Recovery isn't optional, it's strategic. [end B-roll] Guard your off time like it's part of the job - because it is.",
+                    "b_roll": True
+                },
+                {
+                    "title": "get real about what 'urgent' actually means",
+                    "explanation": "[start B-roll] Not everything that feels urgent is urgent. [end B-roll] Learn to tell the difference. Real urgency is rare - manufactured urgency is everywhere.",
+                    "b_roll": True
+                },
+            ],
         }
 
         # Get topic-specific tips or generate creative generic ones
@@ -1132,59 +1250,49 @@ class ContentGenerator:
         return formatted_tips
 
     def generate_creative_generic_tips(self, topic: str, count: int) -> List[Dict]:
-        """Generate creative generic tips with variety"""
-        # Much more varied generic tip patterns
+        """Generate tips when we don't have topic-specific ones - still avoid platitudes"""
+        clean_topic = topic.replace('_', ' ')
         tip_patterns = [
             {
-                "title": f"start with self-awareness",
-                "explanation": f"[start B-roll] You can't change what you don't acknowledge. [end B-roll] Notice when {topic.replace('_', ' ')} shows up in your life and what triggers it.",
+                "title": f"start small, get specific",
+                "explanation": f"Don't try to fix everything at once with {clean_topic}. [start B-roll] Pick one thing, get good at it, then move to the next. [end B-roll] Specific beats vague every time.",
                 "b_roll": True
             },
             {
-                "title": f"take consistent small actions",
-                "explanation": f"Progress isn't about massive leaps. [start B-roll] It's about showing up every day [end B-roll] and doing what you can with what you have.",
+                "title": f"find someone who's done it",
+                "explanation": f"[start B-roll] You don't have to figure out {clean_topic} from scratch. [end B-roll] Find people ahead of you and learn from what worked for them.",
                 "b_roll": True
             },
             {
-                "title": f"learn from every experience",
-                "explanation": f"[start B-roll] Every challenge with {topic.replace('_', ' ')} is feedback, not failure. [end B-roll] Use what doesn't work to inform what will.",
+                "title": f"track what's actually working",
+                "explanation": f"You can't improve {clean_topic} if you're guessing. [start B-roll] Measure something - anything. [end B-roll] Data beats feelings when you're trying to get better.",
                 "b_roll": True
             },
             {
-                "title": f"find your why",
-                "explanation": f"When you know why {topic.replace('_', ' ')} matters to you, [start B-roll] the how becomes easier to figure out. [end B-roll] Motivation follows meaning.",
+                "title": f"get honest feedback",
+                "explanation": f"[start B-roll] Ask people who'll tell you the truth about your {clean_topic}. [end B-roll] Not people who'll make you feel good - people who'll make you better.",
                 "b_roll": True
             },
             {
-                "title": f"embrace discomfort",
-                "explanation": f"[start B-roll] Growth and comfort don't coexist. [end B-roll] If {topic.replace('_', ' ')} feels challenging, that's a sign you're expanding.",
+                "title": f"focus on what you control",
+                "explanation": f"A lot of {clean_topic} comes down to what's in your control vs what isn't. [start B-roll] Put your energy where you can actually make a difference. [end B-roll]",
                 "b_roll": True
             },
             {
-                "title": f"seek feedback",
-                "explanation": f"You can't see your own blind spots. [start B-roll] Ask people you trust how you're doing with {topic.replace('_', ' ')}. [end B-roll] Their perspective is valuable.",
+                "title": f"build systems, not just goals",
+                "explanation": f"[start B-roll] Goals tell you where you want to go. Systems get you there. [end B-roll] What's the repeatable process for improving your {clean_topic}?",
                 "b_roll": True
             },
             {
-                "title": f"practice patience",
-                "explanation": f"[start B-roll] Real change takes time. [end B-roll] Trust the process with {topic.replace('_', ' ')}. Small improvements compound into major transformation.",
+                "title": f"expect it to be messy at first",
+                "explanation": f"Getting better at {clean_topic} isn't a straight line. [start B-roll] You're going to have setbacks. That's not failure, that's the process. [end B-roll]",
                 "b_roll": True
             },
             {
-                "title": f"celebrate progress",
-                "explanation": f"Don't wait for perfection to acknowledge growth. [start B-roll] Notice and celebrate improvements with {topic.replace('_', ' ')}, [end B-roll] no matter how small.",
+                "title": f"protect your energy for what matters",
+                "explanation": f"[start B-roll] Not everything deserves your attention. [end B-roll] Be ruthless about where you invest your time and energy with {clean_topic}.",
                 "b_roll": True
             },
-            {
-                "title": f"build support systems",
-                "explanation": f"[start B-roll] You don't have to figure out {topic.replace('_', ' ')} alone. [end B-roll] Connect with people who get it and can support your journey.",
-                "b_roll": True
-            },
-            {
-                "title": f"reflect regularly",
-                "explanation": f"Take time to review what's working and what isn't with {topic.replace('_', ' ')}. [start B-roll] Reflection turns experience into wisdom. [end B-roll]",
-                "b_roll": True
-            }
         ]
 
         # Randomly select tips
@@ -1193,7 +1301,6 @@ class ContentGenerator:
     def compile_reel_script(self, reel: Dict) -> str:
         """Compile the full script in order"""
         script_parts = [
-            "Talking head video",
             reel["structure"]["hook"]["script"],
             reel["structure"]["intro"]["script"],
             reel["structure"]["transition"]["script"]
@@ -1203,7 +1310,6 @@ class ContentGenerator:
             script_parts.append(tip["script"])
 
         script_parts.append(reel["structure"]["cta"]["script"])
-        script_parts.append("[end visual]")
 
         return " ".join(script_parts)
 
