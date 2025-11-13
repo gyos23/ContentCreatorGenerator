@@ -19,6 +19,40 @@
         "b_roll": true,
         "notes": "From original script - strong ending"
       }
+    ],
+    "leadership": [
+      {
+        "title": "you don't need the title to lead",
+        "explanation": "You can be a leader without the title. [start B-roll] Leadership is a choice, an action. Not a position. [end B-roll]",
+        "b_roll": true,
+        "notes": "Core insight from influence vs authority script - challenges title dependency"
+      },
+      {
+        "title": "lead by influence, not authority",
+        "explanation": "[start B-roll] When you move to influence-based leadership, you develop communication skills in ways you haven't been challenged before. [end B-roll] It's harder, but it builds real trust.",
+        "b_roll": true,
+        "notes": "From 2019 career transition - real leader quote, real growth"
+      },
+      {
+        "title": "trust matters more than title",
+        "explanation": "The question isn't about having authority. [start B-roll] It's about earning trust. [end B-roll] Trust is what actually moves people.",
+        "b_roll": true,
+        "notes": "Central theme from influence script - vulnerable honest question"
+      }
+    ],
+    "influence vs authority": [
+      {
+        "title": "influence requires different skills than authority",
+        "explanation": "[start B-roll] Leading by influence means you have to develop your communication skills in ways you haven't been challenged before. [end B-roll] You can't just tell people what to do - you have to bring them along.",
+        "b_roll": true,
+        "notes": "Key insight from PM transition - real challenge faced"
+      },
+      {
+        "title": "your relationship to teams evolves",
+        "explanation": "When you shift from authority to influence, [start B-roll] your view on leadership evolves and so does your relationship to the teams. [end B-roll] You become a different kind of leader.",
+        "b_roll": true,
+        "notes": "Personal evolution from 2019 Operations to PM role"
+      }
     ]
   },
   "hooks": {
@@ -26,6 +60,18 @@
       {
         "hook": "Negative people. The easiest thing to do is to get rid of negative people when you don't agree with them. But the reality is that's not always an option.",
         "notes": "Original hook - honest, relatable problem statement"
+      }
+    ],
+    "leadership": [
+      {
+        "hook": "Years ago, I moved on from a position of leadership to a strategic individual contributor role, and at the time, I kept asking myself this one question: What's more impactful: a title or someone's trust?",
+        "notes": "Personal story hook - vulnerable, relatable question that sets up the journey"
+      }
+    ],
+    "influence vs authority": [
+      {
+        "hook": "Years ago, I moved on from a position of leadership to a strategic individual contributor role, and at the time, I kept asking myself this one question: What's more impactful: a title or someone's trust?",
+        "notes": "Sets up influence theme perfectly - real experience, honest question"
       }
     ]
   },
@@ -55,6 +101,25 @@
       "cta": "If you found this helpful, follow along and share this with someone who might need it today. Let's grow together.",
       "notes": "Original script example - good structure and flow",
       "performance": "baseline"
+    },
+    {
+      "topic": "influence vs authority",
+      "format": "storytelling",
+      "hook": "Years ago, I moved on from a position of leadership to a strategic individual contributor role, and at the time, I kept asking myself this one question: What's more impactful: a title or someone's trust?",
+      "intro": "Hi, My name is Dorian, I'm a Senior Project manager for a major airline by day, and by night I share content with thousands of people focused on personal growth and development.",
+      "story": [
+        "In 2019, I left a commercial role to return to Operations as a frontline leader—best decision I made.",
+        "A few years later when I became a project manager, one of my leaders notably said, 'You now have to lead by influence, not authority.' That required me to develop my communication skills in ways I hadn't been challenged before.",
+        "My view on influence evolved and so did my relationship to our teams. You can be a leader without the title. Leadership is a choice, an action. Not a position."
+      ],
+      "cta": "If you found this helpful, follow along and share this with someone who'll find this useful. Let's grow together.",
+      "notes": "Personal story format - vulnerable hook, real career journey, powerful insight. Different from tips format - this is pure storytelling. Shows evolution from 2019 to now.",
+      "performance": "pending",
+      "key_insights": [
+        "Title vs trust question",
+        "Lead by influence not authority quote",
+        "Leadership is a choice not a position"
+      ]
     }
   ],
   "_instructions": {
